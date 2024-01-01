@@ -1,0 +1,14 @@
+shipping	--	t3.medium
+mysql		-- 	t3.medium
+mongodb		--	t3.medium
+redis		--	t2.micro
+rabbitmq	--	t2.micro
+web		--	t2.micro
+catalogue	--	t2.micro
+user		--	t2.micro 	
+cart		--	t2.micro
+dispatch	--	t2.micro
+payment		--	t2.micro
+ratings		--	t2.micro
+
+ami-03265a0778a880afb

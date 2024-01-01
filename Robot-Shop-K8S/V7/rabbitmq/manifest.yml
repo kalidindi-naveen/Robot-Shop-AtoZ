@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: rabbitmq
+  namespace: robotshop
+  labels:
+    name: rabbitmq
+    tier: DB
+    owner: Naveen
+spec:
+  containers:
+  - name: rabbitmq
+    image: rabbitmq
+    imagePullPolicy: Always
+    ports:
+      - containerPort: 5672
+      - containerPort: 15672
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq
+  namespace: robotshop
+spec:
+  selector:
+    name: rabbitmq
+    tier: DB
+    owner: Naveen
+  ports:
+  - port: 5672
+    name: amqp
+  - port: 15672
+    name: http

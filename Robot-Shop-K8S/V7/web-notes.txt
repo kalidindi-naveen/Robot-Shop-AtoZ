@@ -1,0 +1,12 @@
+Start Cluster
+minikube start
+minikube tunnel
+
+Add rattings configuration in default.conf file
+
+Build & Push to Docker Hub
+docker build -t naveen2809/web:2.0.7 .
+docker push naveen2809/web:2.0.7
+
+Run the service
+kubectl apply -f manifest.yml

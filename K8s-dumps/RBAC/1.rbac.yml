@@ -1,0 +1,30 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: robot-shop
+  labels:
+    name: robot-shop
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: robot-shop
+  name: robotshop-admin-role
+rules:
+- apiGroups: ["*"] # "" indicates the core API group
+  resources: ["*"]
+  verbs: ["*"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: robotshop-admin-rolebinding
+  namespace: robot-shop
+subjects:
+- kind: User
+  name: robot-shop-admin # IAM User
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: robotshop-admin-role
+  apiGroup: rbac.authorization.k8s.io

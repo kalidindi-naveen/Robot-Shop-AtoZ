@@ -1,0 +1,110 @@
+# Note: we need to have this folder structure for docker-data in current working directory
+# ├───cart
+# ├───catalogue
+# ├───docker-data
+# │   ├───mongodb
+# │   ├───mysql
+# │   ├───rabbitmq
+# │   └───redis
+# ├───shipping
+volumes:
+  # This is equivalent to docker volume create [volume-name]. these are named volumes
+  #  docker volume ls
+  #  DRIVER    VOLUME NAME
+  #  local     robot-shop_mongodb
+  #  local     robot-shop_mysql
+  #  local     robot-shop_rabbitmq
+  #  local     robot-shop_redis
+  mysql:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ./docker-data/mysql
+  redis:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ./docker-data/redis
+  rabbitmq:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ./docker-data/rabbitmq
+  mongodb:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ./docker-data/mongodb
+
+services:
+  mongodb:
+    image: naveen2809/mongodb:1.0.0
+    container_name: mongodb
+    volumes:
+      - mongodb:/data/db
+  redis:
+    image: redis
+    container_name: redis
+    volumes:
+      - redis:/data
+  mysql:
+    image: naveen2809/mysql:1.0.0
+    container_name: mysql
+    volumes:
+      - mysql:/var/lib/mysql
+  rabbitmq:
+    image: rabbitmq
+    container_name: rabbitmq
+    volumes:
+      - rabbitmq:/var/lib/rabbitmq
+  catalogue:
+    image: naveen2809/catalogue:1.0.0
+    container_name: catalogue
+    depends_on:
+      - mongodb
+  user:
+    image: naveen2809/user:1.0.0
+    container_name: user
+    depends_on:
+      - mongodb
+      - redis
+  cart:
+    image: naveen2809/cart:1.0.0
+    container_name: cart
+    depends_on:
+      - catalogue
+      - redis
+  shipping:
+    image: naveen2809/shipping:1.0.0
+    container_name: shipping
+    depends_on:
+      - mysql
+  payment:
+    image: naveen2809/payment:1.0.0
+    container_name: payment
+    depends_on:
+      - rabbitmq
+  ratings:
+    image: naveen2809/ratings:1.0.0
+    container_name: ratings
+    depends_on:
+      - mysql
+  web:
+    image: naveen2809/web:1.0.0
+    container_name: web
+    ports:
+      - "8081:80"
+    depends_on:
+      - catalogue
+      - cart
+      - user
+      - shipping
+      - payment
+      - ratings
+networks:
+  roboshop:
+    driver: bridge

@@ -1,0 +1,16 @@
+Web → Shipping → mysql
+Note:
+    mysql depends on shipping
+
+Copy Shipping & mysql.
+mysql should run first than shipping.
+
+Remove ENV variables in Dockerfile 
+Add ConfigMaps & Secrets in manifest file
+
+Build & Push to Docker Hub
+docker build -t naveen2809/shipping:2.0.0 .
+docker push naveen2809/shipping:2.0.0
+
+Run the service
+kubectl apply -f manifest.yml

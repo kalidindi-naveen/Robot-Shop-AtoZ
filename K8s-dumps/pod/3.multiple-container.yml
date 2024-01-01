@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: multiple
+  namespace: robot-shop
+  labels:
+    name: myapp
+spec:
+  containers:
+  - name: myapp
+    image: nginx
+    ports:
+      - containerPort: 80
+  - name: sidecar
+    image: almalinux
+    command: ["sleep","200"]

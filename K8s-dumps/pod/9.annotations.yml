@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: annotations
+  namespace: robot-shop
+  annotations:
+    gcr.io.naveen2809.reference: Naveen
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    ports:
+      - containerPort: 80

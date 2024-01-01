@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: LimitRange
+metadata:
+  namespace: robot-shop
+  name: cpu-resource-constraint
+spec:
+  limits:
+  - default: # this section defines default limits
+      cpu: 500m
+    defaultRequest: # this section defines default requests
+      cpu: 500m
+    max: # max and min define the limit range
+      cpu: "1"
+    min:
+      cpu: 100m
+    type: Container
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: stress
+  namespace: roboshop
+  labels:
+    name: stress
+spec:
+  containers:
+  - name: stress
+    imagePullPolicy: Always
+    image: naveen2809/stress-ng:v1
+    command: ["sleep","200"]

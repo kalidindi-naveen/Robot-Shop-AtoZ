@@ -1,0 +1,21 @@
+# EveryTime get it from the cmd line when we made changes
+# kubectl get configmap aws-auth -n kube-system -o yaml
+
+apiVersion: v1
+data:
+  mapRoles: |
+    - groups:
+      - system:bootstrappers
+      - system:nodes
+      rolearn: arn:aws:iam::691003562449:role/eksctl-robot-shop-cluster-nodegrou-NodeInstanceRole-7IRNgUhwCOYF
+      username: system:node:{{EC2PrivateDNSName}}
+  mapUsers: |
+    - userarn: arn:aws:iam::691003562449:user/robot-shop-admin
+      username: robot-shop-admin
+kind: ConfigMap
+metadata:
+  creationTimestamp: "2024-01-01T06:25:33Z"
+  name: aws-auth
+  namespace: kube-system
+  resourceVersion: "1234"
+  uid: 7fc681be-adfa-432a-8421-f445c7d9e40c

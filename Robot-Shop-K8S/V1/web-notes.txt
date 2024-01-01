@@ -1,0 +1,10 @@
+Start Cluster
+minikube start
+minikube tunnel
+
+Build & Push to Docker Hub
+docker build -t naveen2809/web:2.0.1 .  
+docker push naveen2809/web:2.0.1
+
+Run the service
+kubectl apply -f manifest.yml

@@ -1,0 +1,25 @@
+# Provide EC2 Full Access, EFS Full Access to Nodes SG
+
+# kind: StorageClass
+# apiVersion: storage.k8s.io/v1
+# metadata:
+#   name: efs-sc
+# provisioner: efs.csi.aws.com
+# reclaimPolicy: Delete
+# parameters:
+#   provisioningMode: efs-ap
+#   fileSystemId: fs-046001bf9be8b9bac
+#   directoryPerms: "700"
+#   gidRangeStart: "1000" # optional
+#   gidRangeEnd: "2000" # optional
+#   basePath: "/dynamic_provisioning"
+
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: ebs-sc
+provisioner: ebs.csi.aws.com
+reclaimPolicy: Retain
+volumeBindingMode: WaitForFirstConsumer
+parameters:
+  type: gp2

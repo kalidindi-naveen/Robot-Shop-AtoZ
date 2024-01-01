@@ -1,0 +1,22 @@
+Running Order:
+--------------
+    Client →→ LoadBalancer →→ web →→ catalogue-service →→ catalogue →→ mongodb-service →→ mongodb
+
+minikube start --nodes 3 -p three-nodes
+minikube tunnel -p three-nodes
+
+imagePullPolicy: Always
+
+apt-get install telnet -y
+
+telnet mongodb-service 8081
+
+kubectl apply -f manifest.yml
+kubectl delete -f manifest.yml
+
+kubectl logs -f catalogue
+
+kubectl exec -it web -- bash
+
+kubectl logs -f payment
+kubectl logs -f catalogue

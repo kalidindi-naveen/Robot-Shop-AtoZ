@@ -1,0 +1,5 @@
+deployment:
+  replicaCount: 1
+  imageVersion: 1.0.0
+service:
+  port: 27017

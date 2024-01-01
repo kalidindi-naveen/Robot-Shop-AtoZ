@@ -1,0 +1,4 @@
+Centos-8-DevOps-Practice
+ami-03265a0778a880afb
+username: centos
+password: DevOps321

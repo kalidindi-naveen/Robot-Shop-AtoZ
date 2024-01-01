@@ -1,0 +1,12 @@
+catalogue opens port: 8080
+
+Note:
+    Web service depends on catalogue.
+    catalogue depends on Mongo service.
+    Pods can connect with each other through service names.
+    
+No need to change anything in catalogue 
+
+we can use naveen2809/catalogue:1.0.0
+
+IMP:: mongoURL='mongodb://mongodb:27017/catalogue' in server.js 

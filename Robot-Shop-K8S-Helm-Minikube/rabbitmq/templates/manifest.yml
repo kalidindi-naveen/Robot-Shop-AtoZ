@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq
+  namespace: robot-shop
+spec:
+  clusterIP: None
+  selector:
+    name: rabbitmq
+    tier: DB
+    owner: Naveen
+  ports:
+  - port: {{ .Values.service.AMQP }}
+    name: amqp
+  - port: {{ .Values.service.HTTP }}
+    name: http
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: rabbitmq
+  namespace: robot-shop
+spec:
+  selector:
+    matchLabels:
+      name: rabbitmq # has to match .spec.template.metadata.labels
+      tier: DB
+      owner: Naveen
+  serviceName: "rabbitmq"
+  replicas: {{ .Values.deployment.replicaCount }} # by default is 1
+  template:
+    metadata:
+      labels:
+        name: rabbitmq # has to match .spec.template.metadata.labels
+        tier: DB
+        owner: Naveen
+    spec:
+      containers:
+      - name: rabbitmq
+        image: rabbitmq
+        ports:
+        - containerPort: {{ .Values.service.AMQP }}
+          name: amqp
+        - containerPort: {{ .Values.service.HTTP }}
+          name: http
+        volumeMounts:
+        - name: rabbitmq-volume
+          mountPath: /var/lib/rabbitmq
+  volumeClaimTemplates:
+  - metadata:
+      name: rabbitmq-volume
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "local-storage"
+      resources:
+        requests:
+          storage: 1Gi

@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: course-config
+  namespace: roboshop
+data:
+  course: docker
+  duration: 90hr

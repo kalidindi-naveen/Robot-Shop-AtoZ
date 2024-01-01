@@ -1,0 +1,60 @@
+services:
+  mongodb:
+    image: naveen2809/mongodb:1.0.0
+    container_name: mongodb
+  redis:
+    image: redis
+    container_name: redis
+  mysql:
+    image: naveen2809/mysql:1.0.0
+    container_name: mysql
+  rabbitmq:
+    image: rabbitmq
+    container_name: rabbitmq
+  catalogue:
+    image: naveen2809/catalogue:1.0.0
+    container_name: catalogue
+    depends_on:
+      - mongodb
+  user:
+    image: naveen2809/user:1.0.0
+    container_name: user
+    depends_on:
+      - mongodb
+      - redis
+  cart:
+    image: naveen2809/cart:1.0.0
+    container_name: cart
+    depends_on:
+      - catalogue
+      - redis
+  shipping:
+    image: naveen2809/shipping:1.0.0
+    container_name: shipping
+    depends_on:
+      - mysql
+  payment:
+    image: naveen2809/payment:1.0.0
+    container_name: payment
+    depends_on:
+      - rabbitmq
+  ratings:
+    image: naveen2809/ratings:1.0.0
+    container_name: ratings
+    depends_on:
+      - mysql
+  web:
+    image: naveen2809/web:1.0.0
+    container_name: web
+    ports:
+      - "8081:80"
+    depends_on:
+      - catalogue
+      - cart
+      - user
+      - shipping
+      - payment
+      - ratings
+networks:
+  roboshop:
+    driver: bridge

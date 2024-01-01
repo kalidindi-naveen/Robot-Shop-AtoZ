@@ -1,0 +1,5 @@
+Web → Cart → catalogue & redis
+Note:
+    cart depends on catalogue & redis
+
+redis should run first than Cart

@@ -1,0 +1,6 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: robot-shop
+  labels:
+    name: robot-shop

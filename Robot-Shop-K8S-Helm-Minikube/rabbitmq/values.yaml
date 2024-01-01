@@ -1,0 +1,5 @@
+deployment:
+  replicaCount: 1
+service:
+  AMQP: 5672
+  HTTP: 15672

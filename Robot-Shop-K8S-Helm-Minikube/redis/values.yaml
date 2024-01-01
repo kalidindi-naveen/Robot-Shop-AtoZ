@@ -1,0 +1,4 @@
+deployment:
+  replicaCount: 1
+service:
+  port: 6379

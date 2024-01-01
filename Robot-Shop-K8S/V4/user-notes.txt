@@ -1,0 +1,10 @@
+Web → User → Mongo & Redis
+Note:
+    Web service depends on User.
+    User depends on Mongo service.
+    User depends on Redis
+
+MongoDB should run first than User
+Redis should run first than User
+Modify default.conf for nginx to pick User Service
+Re-build Web Image

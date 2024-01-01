@@ -1,0 +1,45 @@
+mongo(1.0.0) -- catalogue(1.0.0), user(1.0.0)
+
+redis(latest) -- cart(1.0.0), user
+
+mysql(2.0.0) -- shipping(2.0.0), rattings(1.0.0)
+
+rabbitmq(latest) -- payment(1.0.0)
+
+namespace: robotshop
+
+DB
+--
+mongodb 1.0.0
+redis latest
+rabbitmq latest
+mysql 2.0.0 (remove env from Dockerfile, add to manifest.yml)
+kubectl exec -it mysql -- bash
+mysql
+> show databases;
+
+BE / App
+--------
+catalogue 1.0.0 (add Config in ConfigMap)
+kubectl logs -f catalogue // we see MongoDB connected
+
+user 1.0.0
+kubectl logs -f user // we see MongoDB connected & Redis READY undefined
+
+cart 1.0.0
+kubectl logs -f cart // we see Redis READY undefined
+
+shipping 2.0.0 (remove env from Dockerfile, add to manifest.yml)
+kubectl logs -f shipping
+kubectl exec -it shipping -- sh 
+env | grep cart
+CART_ENDPOINT=cart:8080
+
+payment 1.0.0
+kubectl logs -f payment
+kubectl exec -it payment -- bash
+env 
+
+ratings 1.0.0
+
+web 2.0.7

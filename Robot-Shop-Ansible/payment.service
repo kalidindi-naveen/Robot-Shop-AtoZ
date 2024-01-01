@@ -1,0 +1,20 @@
+[Unit]
+Description=Payment Service
+
+[Service]
+User=root
+WorkingDirectory=/app
+Environment=CART_HOST=cart.step-into-iot.cloud
+Environment=CART_PORT=8080
+Environment=USER_HOST=user.step-into-iot.cloud
+Environment=USER_PORT=8080
+Environment=AMQP_HOST=rabbitmq.step-into-iot.cloud
+Environment=AMQP_USER=robot-shop
+Environment=AMQP_PASS=robot-shop123
+
+ExecStart=/usr/local/bin/uwsgi --ini payment.ini
+ExecStop=/bin/kill -9 $MAINPID
+SyslogIdentifier=payment
+
+[Install]
+WantedBy=multi-user.target

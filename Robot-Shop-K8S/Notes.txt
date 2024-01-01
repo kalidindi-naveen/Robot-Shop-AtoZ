@@ -1,0 +1,72 @@
+Robot-Shop With Kubernetes
+
+Running Order:
+--------------
+    DB →→ Service's →→ Web Service
+
+Web Service
+-----------
+docker build -t naveen2809/web:K8s .
+docker push naveen2809/web:K8s
+
+
+Web Service
+-----------
+Web → Catalogue → Mongo
+
+Running Order:
+--------------
+    Client →→ LoadBalancer →→ web →→ catalogue(service) →→ catalogue →→ mongodb(service) →→ mongodb
+
+mongodb opens port: 27017
+Note:
+    Web service depends on catalogue.
+    catalogue depends on Mongo service.
+    Pods connect to each other with Service.
+
+No need to change anything in mongo
+
+Catalogue Service
+-----------------
+catalogue opens port: 8080
+Change mongoURL='mongodb://mongodb:27017/catalogue' in server.js 
+
+docker build -t naveen2809/catalogue:K8s .
+docker push naveen2809/catalogue:K8s
+
+Web Service
+-----------
+Add Catalogue Proxy in default.conf
+
+docker build -t naveen2809/web:K8s .
+docker push naveen2809/web:K8s
+
+User Service
+------------
+Web → User → Mongo & Redis
+Note:
+    Web service depends on User.
+    User depends on Mongo service.
+    User depends on Redis
+
+MongoDB should run first than User
+Redis should run first than User
+Modify default.conf for nginx to pick User Service
+Re-build Web Image
+
+Shipping Service
+----------------
+Web → Shipping → mysql
+Note:
+    mysql depends on shipping
+
+Copy Shipping & mysql.
+mysql should run first than shipping.
+
+Payments Service
+----------------
+Web → Payment → RabbitMq
+Note:
+    Payments depends on RabbitMq
+
+RabbitMq should run first than Payments

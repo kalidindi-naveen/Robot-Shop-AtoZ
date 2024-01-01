@@ -1,0 +1,26 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: robot-shop
+  name: robot-shop-developer
+rules:
+- apiGroups: ["*"] # "" indicates the core API group
+  resources: ["deployments","services","secrets","configmaps"]
+  verbs: ["get","list","watch","create","update","delete"]
+- apiGroups: [""] # "" indicates the core API group
+  resources: ["pods"]
+  verbs: ["get","list","watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: robot-shop-developer-rolebinding
+  namespace: robot-shop
+subjects:
+- kind: User
+  name: neelima
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: robot-shop-developer
+  apiGroup: rbac.authorization.k8s.io

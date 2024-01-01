@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: stress
+  namespace: robot-shop
+  labels:
+    name: stress
+spec:
+  containers:
+  - name: stress
+    imagePullPolicy: Always
+    image: naveen2809/stress-ng:v1
+    command: ["sleep","200"]
+    resources:
+      requests:
+        memory: "64Mi"
+        cpu: "250m"
+      limits:
+        memory: "128Mi"
+        cpu: "500m"

@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cart-config
+  namespace: robotshop
+data:
+  REDIS_HOST: redis
+  CATALOGUE_HOST: catalogue
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: cart
+  namespace: robotshop
+  labels:
+    name: cart
+    tier: App
+    owner: Naveen
+spec:
+  containers:
+  - name: cart
+    image: naveen2809/cart:1.0.0
+    imagePullPolicy: Always
+    envFrom:
+      - configMapRef:
+            name: cart-config
+    ports:
+      - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cart
+  namespace: robotshop
+spec:
+  selector:
+    name: cart
+    tier: App
+    owner: Naveen
+  ports:
+  - port: 8080
+    targetPort: 8080

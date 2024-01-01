@@ -1,0 +1,5 @@
+Web → Payment → RabbitMq
+Note:
+    Payments depends on RabbitMq
+
+RabbitMq should run first than Payments

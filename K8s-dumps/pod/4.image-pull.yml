@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp
+  namespace: robot-shop
+  labels:
+    name: myapp
+spec:
+  containers:
+  - name: myapp
+    image: nginx
+    imagePullPolicy: Always
+    ports:
+      - containerPort: 80

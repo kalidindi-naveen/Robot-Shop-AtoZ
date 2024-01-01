@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mongodb
+  namespace: robot-shop
+spec:
+  selector:
+    matchLabels:
+      name: mongodb # has to match .spec.template.metadata.labels
+      tier: DB
+      owner: Naveen
+  serviceName: "mongodb"
+  replicas: 1 # by default is 1
+  minReadySeconds: 10 # by default is 0
+  template:
+    metadata:
+      labels:
+        name: mongodb # has to match .spec.template.metadata.labels
+        tier: DB
+        owner: Naveen
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: mongodb
+        image: naveen2809/mongodb:1.0.0
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 27017
+          name: mongodb
+        volumeMounts:
+        - name: mongodb-volume
+          mountPath: /data
+  volumeClaimTemplates:
+  - metadata:
+      name: mongodb-volume
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "ebs-sc" #"efs-sc"
+      resources:
+        requests:
+          storage: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb
+  namespace: robot-shop
+  labels:
+    name: mongodb
+    tier: DB
+    owner: Naveen
+spec:
+  selector:
+    name: mongodb
+    tier: DB
+    owner: Naveen
+  ports:
+  - port: 27017
+    name: mongodb
+  clusterIP: None #headless service

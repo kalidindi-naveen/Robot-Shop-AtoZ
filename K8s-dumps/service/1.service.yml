@@ -1,0 +1,43 @@
+# Service Type as Cluster-IP
+# By Default it will take cluster IP
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+  labels:
+    server: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    resources:
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
+    ports:
+      - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-svc
+spec:
+  selector:
+    server: nginx
+  ports:
+  - port: 8081 # HostPort
+    targetPort: 80 # Container Port
+---
+# This Pod is for Testing Purpose only
+apiVersion: v1
+kind: Pod
+metadata:
+  name: debug
+  labels:
+    server: almalinux
+spec:
+  containers:
+  - name: almalinux
+    image: almalinux
+    command: ["sleep","2000"]

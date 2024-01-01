@@ -1,0 +1,5 @@
+we neeed to use 2 ports
+  internal rabbitmq :: amqp :: 5672
+  http :: 15672
+
+use official image with latest version

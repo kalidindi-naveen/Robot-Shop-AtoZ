@@ -1,0 +1,69 @@
+docker compose -f docker-compose-volume.yml up -d
+docker build -t naveen2809/web:5.0.0 -f docker-2 .
+
+Running Order:
+    DB →→ Service's →→ Web Service
+
+Web Service
+-----------
+Web → Catalogue → Mongo
+Note:
+    Web service depends on catalogue.
+    catalogue depends on Mongo service.
+    Containers Should have Proper Name to connect to each other.
+
+
+Run Web
+MongoDB should run first than Catalogue
+Connect Web to Catalogue
+create network roboshop
+Rename default.conf.template to default.conf
+Copy default.conf of nginx from web paste in default.conf because it won't work
+
+User Service
+------------
+Web → User → Mongo & Redis
+Note:
+    Web service depends on User.
+    User depends on Mongo service.
+    User depends on Redis
+
+MongoDB should run first than User
+Redis should run first than User
+Modify default.conf for nginx to pick User Service
+Re-build Web Image
+
+Using docker-compose.yml we can spin up container's easily
+
+Cart Service
+------------
+Web → Cart → catalogue & redis
+Note:
+    cart depends on catalogue & redis
+
+redis should run first than Cart
+
+Shipping Service
+----------------
+Web → Shipping → mysql
+Note:
+    mysql depends on shipping
+
+Copy Shipping & mysql.
+mysql should run first than shipping.
+
+Payments Service
+----------------
+Web → Payment → RabbitMq
+Note:
+    Payments depends on RabbitMq
+
+RabbitMq should run first than Payments
+
+Ratings Service
+---------------
+Web → Ratings → MySql
+Note:
+    Ratings depends on MySql
+
+MySql should run first than Ratings

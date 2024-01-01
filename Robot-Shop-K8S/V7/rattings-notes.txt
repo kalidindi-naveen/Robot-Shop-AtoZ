@@ -1,0 +1,4 @@
+rattings deponds on mysql
+
+Run the service
+kubectl apply -f manifest.yml

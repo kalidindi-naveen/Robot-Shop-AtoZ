@@ -1,0 +1,9 @@
+.*.swp
+.DS_Store
+*-private.*
+vendor/
+Gopkg.lock
+docker-volume/mongodb/*
+docker-volume/mysql/*
+docker-volume/rabbitmq/*
+docker-volume/redis/*

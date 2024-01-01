@@ -1,0 +1,3 @@
+redis opens port 6379
+
+we can use official redis image

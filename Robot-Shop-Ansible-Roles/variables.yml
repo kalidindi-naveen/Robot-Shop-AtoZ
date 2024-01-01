@@ -1,0 +1,10 @@
+MONGODB_HOST: mongodb.step-into-iot.cloud # submit your host
+REDIS_HOST: redis.step-into-iot.cloud
+MYSQL_HOST: mysql.step-into-iot.cloud
+RABBITMQ_HOST: rabbitmq.step-into-iot.cloud
+CATALOGUE_HOST: catalogue.step-into-iot.cloud
+USER_HOST: user.step-into-iot.cloud
+CART_HOST: cart.step-into-iot.cloud
+SHIPPING_HOST: shipping.step-into-iot.cloud
+PAYMENT_HOST: payment.step-into-iot.cloud
+DISPATCH_HOST: dispatch.step-into-iot.cloud

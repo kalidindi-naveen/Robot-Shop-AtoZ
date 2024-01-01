@@ -1,0 +1,94 @@
+networks:
+  roboshop:
+    driver: bridge
+volumes:
+  # This is equivalent to docker volume create [volume-name]. these are named volumes
+  mysql:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: /home/ec2-user/mysql
+  redis:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: /home/ec2-user/redis
+  rabbitmq:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: /home/ec2-user/rabbitmq
+  mongodb:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: /home/ec2-user/mongodb
+
+services:
+  web:
+    image: naveen2809/web:1.0.0
+    container_name: web
+    ports:
+      - "8081:80"
+    depends_on:
+      - catalogue
+      - user
+      - cart
+      - mysql
+      - shipping
+  mongodb:
+    image: naveen2809/mongodb:1.0.0
+    container_name: mongodb
+    volumes:
+      - mongodb:/data/db
+  catalogue:
+    image: naveen2809/catalogue:1.0.0
+    container_name: catalogue
+    depends_on:
+      - mongodb
+  redis:
+    image: redis
+    container_name: redis
+    volumes:
+      - redis:/data
+  user:
+    image: naveen2809/user:1.0.0
+    container_name: user
+    depends_on:
+      - mongodb
+      - redis
+  cart:
+    image: naveen2809/cart:1.0.0
+    container_name: cart
+    depends_on:
+      - redis
+      - catalogue
+  mysql:
+    image: naveen2809/mysql:1.0.0
+    container_name: mysql
+    volumes:
+      - mysql:/var/lib/mysql
+  shipping:
+    image: naveen2809/shipping:1.0.0
+    container_name: shipping
+    depends_on:
+      - mysql
+  rabbitmq:
+    image: rabbitmq
+    container_name: rabbitmq
+    volumes:
+      - rabbitmq:/var/lib/rabbitmq
+  payment:
+    image: naveen2809/payment:1.0.0
+    container_name: payment
+    depends_on:
+      - rabbitmq
+  ratings:
+    image: naveen2809/ratings:1.0.0
+    container_name: ratings
+    depends_on:
+      - mysql

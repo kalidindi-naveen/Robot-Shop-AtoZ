@@ -1,0 +1,78 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-config
+  namespace: robot-shop
+data:
+  MYSQL_DATABASE: "cities"
+  MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mysql-secret
+  namespace: robot-shop
+type: Opaque
+data:
+  MYSQL_USER: c2hpcHBpbmc=
+  MYSQL_PASSWORD: c2VjcmV0
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mysql
+  namespace: robot-shop
+spec:
+  selector:
+    matchLabels:
+      name: mysql # has to match .spec.template.metadata.labels
+      tier: DB
+      owner: Naveen
+  serviceName: "mysql"
+  replicas: {{ .Values.deployment.replicaCount }} # by default is 1
+  template:
+    metadata:
+      labels:
+        name: mysql # has to match .spec.template.metadata.labels
+        tier: DB
+        owner: Naveen
+    spec:
+      containers:
+      - name: mysql
+        image: naveen2809/mysql:{{ .Values.deployment.imageVersion }}
+        imagePullPolicy: Always
+        envFrom:
+        - configMapRef:
+            name: mysql-config
+        - secretRef:
+            name: mysql-secret
+        ports:
+        - containerPort: 3306
+        volumeMounts:
+        - name: mysql-volume
+          mountPath: /var/lib/mysql
+  volumeClaimTemplates:
+  - metadata:
+      name: mysql-volume
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "local-storage"
+      resources:
+        requests:
+          storage: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+  namespace: robot-shop
+spec:
+  clusterIP: None
+  selector:
+    name: mysql
+    tier: DB
+    owner: Naveen
+  ports:
+    - protocol: TCP
+      port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.port }}

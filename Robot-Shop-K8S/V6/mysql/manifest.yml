@@ -1,0 +1,55 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-config
+  namespace: robotshop
+data:
+  MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+  MYSQL_DATABASE: "cities" 
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mysql-secret
+  namespace: robotshop
+type: Opaque
+data:
+  MYSQL_USER: c2hpcHBpbmc=
+  MYSQL_PASSWORD: c2VjcmV0
+---
+# Don't limit resourcces for Databases
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mysql
+  namespace: robotshop
+  labels:
+    name: mysql
+    tier: DB
+    owner: Naveen
+spec:
+  containers:
+  - name: mysql
+    imagePullPolicy: Always
+    image: naveen2809/mysql:2.0.0
+    envFrom:
+      - configMapRef:
+            name: mysql-config
+      - secretRef:
+            name: mysql-secret
+    ports:
+      - containerPort: 3306
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+  namespace: robotshop
+spec:
+  selector:
+    name: mysql
+    tier: DB
+    owner: Naveen
+  ports:
+  - port: 3306
+    targetPort: 3306
